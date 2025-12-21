@@ -20,7 +20,7 @@ namespace SocialNetworkApp.Algorithms
             return result;
         }
 
-        // En yüksek dereceli N dü?ümü döndürür (id, degree)
+        // En yüksek dereceli N düðümü döndürür (id, degree)
         public static List<KeyValuePair<int, int>> TopDegreeNodes(Graph graph, int top = 5)
         {
             return DegreeCentrality(graph)
@@ -34,7 +34,7 @@ namespace SocialNetworkApp.Algorithms
         // Dönen sözlük: nodeId -> colorIndex (0-based)
         public static Dictionary<int, int> WelshPowell(Graph graph)
         {
-            // Tüm dü?ümleri dereceye göre azalan s?rada al
+            // Tüm düðümleri dereceye göre azalan sýrada al
             var nodes = graph.GetAllNodes()
                 .Select(n => new { Id = n.Id, Degree = graph.GetNeighbors(n.Id).Count() })
                 .OrderByDescending(x => x.Degree)
@@ -47,16 +47,16 @@ namespace SocialNetworkApp.Algorithms
 
             foreach (var nodeId in nodes)
             {
-                if (colorOf.ContainsKey(nodeId)) continue; // zaten boyanm??
+                if (colorOf.ContainsKey(nodeId)) continue; // zaten boyanmýþ
 
-                // bu dü?üme yeni renk ata
+                // bu düðüme yeni renk ata
                 colorOf[nodeId] = color;
 
-                // di?er dü?ümleri ayn? renkle boyamaya çal??
+                // diðer düðümleri ayný renkle boyamaya çalýþ
                 foreach (var other in nodes)
                 {
                     if (colorOf.ContainsKey(other)) continue;
-                    // di?er dü?ümün bu renkteki herhangi bir kom?usu var m??
+                    // diðer düðümün bu renkteki herhangi bir komþusu var mý?
                     bool conflict = false;
                     foreach (var colored in colorOf.Where(kv => kv.Value == color).Select(kv => kv.Key))
                     {
@@ -79,7 +79,7 @@ namespace SocialNetworkApp.Algorithms
             return colorOf;
         }
 
-        // Welsh-Powell her ba?l? bile?en için uygular ve component bazl? renklendirme döndürür
+        // Welsh-Powell her baðlý bileþen için uygular ve component bazlý renklendirme döndürür
         public static Dictionary<int, int> WelshPowellByComponent(Graph graph)
         {
             var components = CommunityAlgorithms.ConnectedComponents(graph);

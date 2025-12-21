@@ -7,16 +7,16 @@ using SocialNetworkApp.Models;
 namespace SocialNetworkApp.UI
 {
     /// <summary>
-    /// Sosyal a? graf?n? görsel olarak çizer ve render eder.
-    /// Node konumlar?, seçim, renklendirme ve highlight i?lemlerini yönetir.
+    /// Sosyal að grafýný görsel olarak çizer ve render eder.
+    /// Node konumlarý, seçim, renklendirme ve highlight iþlemlerini yönetir.
     /// </summary>
     public class Visualizer
     {
-        // Canvas boyutlar?
+        // Canvas boyutlarý
         private int _canvasWidth;
         private int _canvasHeight;
 
-        // Node konumlar? (ID -> PointF)
+        // Node konumlarý (ID -> PointF)
         private Dictionary<int, PointF> _nodePositions = new();
 
         // Node seçim durumu
@@ -28,13 +28,13 @@ namespace SocialNetworkApp.UI
         // Path highlight (yol göstermek için)
         private List<int> _highlightedPath = new();
 
-        // Node yar?çap?
+        // Node yarýçapý
         public float NodeRadius { get; set; } = 15f;
 
-        // Edge kal?nl???
+        // Edge kalýnlýðý
         public float EdgeWidth { get; set; } = 2f;
 
-        // Edge highlight kal?nl???
+        // Edge highlight kalýnlýðý
         public float HighlightedEdgeWidth { get; set; } = 4f;
 
         // Font
@@ -49,10 +49,10 @@ namespace SocialNetworkApp.UI
         public Color TextColor { get; set; } = Color.Black;
 
         /// <summary>
-        /// Visualizer'? canvas boyutlar?yla ba?lat?r.
+        /// Visualizer'ý canvas boyutlarýyla baþlatýr.
         /// </summary>
-        /// <param name="canvasWidth">Canvas geni?li?i</param>
-        /// <param name="canvasHeight">Canvas yüksekli?i</param>
+        /// <param name="canvasWidth">Canvas geniþliði</param>
+        /// <param name="canvasHeight">Canvas yüksekliði</param>
         public Visualizer(int canvasWidth, int canvasHeight)
         {
             _canvasWidth = canvasWidth;
@@ -60,13 +60,13 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Canvas boyutlar?n? günceller (resize durumunda).
+        /// Canvas boyutlarýný günceller (resize durumunda).
         /// </summary>
         public void SetCanvasSize(int width, int height)
         {
             _canvasWidth = width;
             _canvasHeight = height;
-            // Node konumlar?n? yeniden hesapla
+            // Node konumlarýný yeniden hesapla
             if (_nodePositions.Count > 0)
             {
                 var nodeIds = _nodePositions.Keys.ToList();
@@ -75,8 +75,8 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Graf? render eder (çizer).
-        /// Edges ? Nodes ? Labels s?ras?nda çizilir.
+        /// Grafý render eder (çizer).
+        /// Edges ? Nodes ? Labels sýrasýnda çizilir.
         /// </summary>
         /// <param name="g">Graphics nesnesi</param>
         /// <param name="graph">Çizilecek graf</param>
@@ -87,28 +87,28 @@ namespace SocialNetworkApp.UI
             g.Clear(Color.White);
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            // Node konumlar?n? hesapla (ilk kez)
+            // Node konumlarýný hesapla (ilk kez)
             if (_nodePositions.Count == 0)
             {
                 var nodeIds = graph.GetAllNodes().Select(n => n.Id).ToList();
                 CalculateCircleLayout(nodeIds);
             }
 
-            // Kenarlar? çiz (önce, node'lar?n alt?nda olsun)
+            // Kenarlarý çiz (önce, node'larýn altýnda olsun)
             DrawAllEdges(g, graph);
 
-            // Node'lar? çiz
+            // Node'larý çiz
             DrawAllNodes(g, graph);
 
-            // Label'lar? çiz
+            // Label'larý çiz
             DrawAllLabels(g, graph);
         }
 
         /// <summary>
-        /// Belirli bir node'a t?klan?p t?klanmad???n? kontrol eder.
+        /// Belirli bir node'a týklanýp týklanmadýðýný kontrol eder.
         /// </summary>
         /// <param name="mousePos">Fare pozisyonu</param>
-        /// <returns>T?klanan node'un ID'si, yoksa -1</returns>
+        /// <returns>Týklanan node'un ID'si, yoksa -1</returns>
         public int GetNodeAtPosition(PointF mousePos)
         {
             foreach (var (nodeId, pos) in _nodePositions)
@@ -131,7 +131,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Node'u seçilen liste'den ç?kar?r.
+        /// Node'u seçilen liste'den çýkarýr.
         /// </summary>
         public void DeselectNode(int nodeId)
         {
@@ -147,12 +147,12 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Seçili node'lar?n ID'lerini döner.
+        /// Seçili node'larýn ID'lerini döner.
         /// </summary>
         public IEnumerable<int> GetSelectedNodeIds() => _selectedNodeIds;
 
         /// <summary>
-        /// Node'u seçili state'e getir veya ç?kar (toggle).
+        /// Node'u seçili state'e getir veya çýkar (toggle).
         /// </summary>
         public void ToggleSelection(int nodeId)
         {
@@ -163,7 +163,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Belirli bir yolu highlight eder (örn: en k?sa yol).
+        /// Belirli bir yolu highlight eder (örn: en kýsa yol).
         /// </summary>
         /// <param name="path">Node ID'lerinin listesi</param>
         public void HighlightPath(List<int> path)
@@ -172,7 +172,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Highlight'? temizler.
+        /// Highlight'ý temizler.
         /// </summary>
         public void ClearHighlight()
         {
@@ -182,7 +182,7 @@ namespace SocialNetworkApp.UI
         /// <summary>
         /// Node'lara renk atar (örn: Welsh-Powell renklendirmesi).
         /// </summary>
-        /// <param name="colorMap">Node ID -> Color e?lemesi</param>
+        /// <param name="colorMap">Node ID -> Color eþlemesi</param>
         public void SetNodeColors(Dictionary<int, Color> colorMap)
         {
             _nodeColors = colorMap ?? new Dictionary<int, Color>();
@@ -199,7 +199,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Tüm kenarlar? çizer.
+        /// Tüm kenarlarý çizer.
         /// </summary>
         private void DrawAllEdges(Graphics g, Graph graph)
         {
@@ -207,7 +207,7 @@ namespace SocialNetworkApp.UI
 
             foreach (var edge in graph.GetEdges())
             {
-                // Yönsüz graf ? her kenar? bir kez çiz
+                // Yönsüz graf ? her kenarý bir kez çiz
                 var key = edge.SourceId < edge.TargetId
                     ? $"{edge.SourceId}-{edge.TargetId}"
                     : $"{edge.TargetId}-{edge.SourceId}";
@@ -224,7 +224,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Tek bir kenar? çizer.
+        /// Tek bir kenarý çizer.
         /// </summary>
         private void DrawEdge(Graphics g, Edge edge, PointF p1, PointF p2)
         {
@@ -237,7 +237,7 @@ namespace SocialNetworkApp.UI
             {
                 g.DrawLine(pen, p1, p2);
 
-                // A??rl?k etiketini çiz
+                // Aðýrlýk etiketini çiz
                 if (width == EdgeWidth) // Sadece normal edge'ler için
                 {
                     DrawEdgeWeight(g, edge, p1, p2);
@@ -246,7 +246,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Kenar a??rl???n? çizer (edge ortas?nda).
+        /// Kenar aðýrlýðýný çizer (edge ortasýnda).
         /// </summary>
         private void DrawEdgeWeight(Graphics g, Edge edge, PointF p1, PointF p2)
         {
@@ -262,7 +262,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Tüm node'lar? çizer.
+        /// Tüm node'larý çizer.
         /// </summary>
         private void DrawAllNodes(Graphics g, Graph graph)
         {
@@ -302,7 +302,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Tüm node label'lar?n? çizer.
+        /// Tüm node label'larýný çizer.
         /// </summary>
         private void DrawAllLabels(Graphics g, Graph graph)
         {
@@ -324,7 +324,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Node'lar? daire ?eklinde yerle?tirir (basit layout).
+        /// Node'larý daire þeklinde yerleþtirir (basit layout).
         /// </summary>
         private void CalculateCircleLayout(List<int> nodeIds)
         {
@@ -345,7 +345,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Kenar'?n highlight edilen yolda olup olmad???n? kontrol eder.
+        /// Kenar'ýn highlight edilen yolda olup olmadýðýný kontrol eder.
         /// </summary>
         private bool IsEdgeInPath(int sourceId, int targetId)
         {
@@ -364,7 +364,7 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// ?ki nokta aras?ndaki Euclidean mesafesini hesaplar.
+        /// Ýki nokta arasýndaki Euclidean mesafesini hesaplar.
         /// </summary>
         private float Distance(PointF p1, PointF p2)
         {
@@ -374,12 +374,12 @@ namespace SocialNetworkApp.UI
         }
 
         /// <summary>
-        /// Node konumlar?n? döner (debug/test için).
+        /// Node konumlarýný döner (debug/test için).
         /// </summary>
         public Dictionary<int, PointF> GetNodePositions() => new Dictionary<int, PointF>(_nodePositions);
 
         /// <summary>
-        /// Node konumlar?n? manuel olarak ayarlar.
+        /// Node konumlarýný manuel olarak ayarlar.
         /// </summary>
         public void SetNodePositions(Dictionary<int, PointF> positions)
         {
