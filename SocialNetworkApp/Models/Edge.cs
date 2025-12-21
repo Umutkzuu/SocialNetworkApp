@@ -3,36 +3,36 @@ using System;
 namespace SocialNetworkApp.Models
 {
     /// <summary>
-    /// Graf?n kenar?n? (edge) temsil eder.
-    /// A??rl?kl?, yönsüz graf kenarlar?n? tan?mlar.
+    /// Grafýn kenarýný (edge) temsil eder.
+    /// Aðýrlýklý, yönsüz graf kenarlarýný tanýmlar.
     /// </summary>
     public class Edge
     {
-        // Kenar?n ba?lang?ç dü?ümü ID'si
+        // Kenarýn baþlangýç düðümü ID'si
         public int SourceId { get; }
         
-        // Kenar?n hedef dü?ümü ID'si
+        // Kenarýn hedef düðümü ID'si
         public int TargetId { get; }
         
-        // Kenar?n a??rl??? (maliyet, uzakl?k vb.)
+        // Kenarýn aðýrlýðý (maliyet, uzaklýk vb.)
         public double Weight { get; set; }
 
         /// <summary>
-        /// Edge (kenar) olu?turur.
+        /// Edge (kenar) oluþturur.
         /// </summary>
-        /// <param name="sourceId">Ba?lang?ç node ID (> 0)</param>
+        /// <param name="sourceId">Baþlangýç node ID (> 0)</param>
         /// <param name="targetId">Hedef node ID (> 0)</param>
-        /// <param name="weight">A??rl?k de?eri (default: 1.0)</param>
+        /// <param name="weight">Aðýrlýk deðeri (default: 1.0)</param>
         public Edge(int sourceId, int targetId, double weight = 1.0)
         {
-            // ID'lerin pozitif olup olmad???n? kontrol et
+            // ID'lerin pozitif olup olmadýðýný kontrol et
             if (sourceId <= 0) throw new ArgumentOutOfRangeException(nameof(sourceId));
             if (targetId <= 0) throw new ArgumentOutOfRangeException(nameof(targetId));
             
-            // Self-loop (kendine ba?lanan kenar) engelle
+            // Self-loop (kendine baðlanan kenar) engelle
             if (sourceId == targetId) throw new ArgumentException("Self-loops are not allowed.", nameof(targetId));
             
-            // A??rl?k pozitif olmal?
+            // Aðýrlýk pozitif olmalý
             if (weight <= 0) throw new ArgumentOutOfRangeException(nameof(weight));
 
             SourceId = sourceId;
@@ -41,12 +41,12 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// Kenar?n self-loop olup olmad???n? kontrol eder.
+        /// Kenarýn self-loop olup olmadýðýný kontrol eder.
         /// </summary>
         public bool IsLoop => SourceId == TargetId;
 
         /// <summary>
-        /// Kenar?n string temsilini döner (debug için).
+        /// Kenarýn string temsilini döner (debug için).
         /// Örn: "Edge: 1 <-> 2 (w=0.5)"
         /// </summary>
         public override string ToString() => $"Edge: {SourceId} <-> {TargetId} (w={Weight})";

@@ -4,36 +4,36 @@ using System.Collections.Generic;
 namespace SocialNetworkApp.Models
 {
     /// <summary>
-    /// Sosyal a??n dü?ümünü (node) temsil eder.
-    /// Her dü?üm bir kullan?c?/ki?iyi temsil eder.
+    /// Sosyal aðýn düðümünü (node) temsil eder.
+    /// Her düðüm bir kullanýcý/kiþiyi temsil eder.
     /// </summary>
     public class Node
     {
-        // Dü?ümün benzersiz kimli?i
+        // Düðümün benzersiz kimliði
         public int Id { get; }
         
-        // Dü?ümün ad? (kullan?c? ad?)
+        // Düðümün adý (kullanýcý adý)
         public string Name { get; set; }
 
-        // Kullan?c?n?n aktiflik seviyesi (0.0 - 1.0 aras?nda)
+        // Kullanýcýnýn aktiflik seviyesi (0.0 - 1.0 arasýnda)
         public double Aktiflik { get; set; }
         
-        // Kullan?c?n?n etkile?im say?s?
+        // Kullanýcýnýn etkileþim sayýsý
         public double Etkilesim { get; set; }
 
-        // Kom?u dü?ümler ve aralar?ndaki kenar a??rl?klar?
+        // Komþu düðümler ve aralarýndaki kenar aðýrlýklarý
         private readonly Dictionary<Node, double> _neighbors = new();
 
-        // Kom?ulara read-only eri?im
+        // Komþulara read-only eriþim
         public IReadOnlyDictionary<Node, double> Neighbors => _neighbors;
 
         /// <summary>
-        /// Sadece ad ve ID ile node olu?turur.
+        /// Sadece adý ve ID ile node oluþturur.
         /// </summary>
         public Node(int id, string name)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name bo? olamaz.", nameof(name));
+                throw new ArgumentException("Name boþ olamaz.", nameof(name));
 
             Id = id;
             Name = name.Trim();
@@ -42,7 +42,7 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// Say?sal özelliklerle birlikte node olu?turur.
+        /// Sayýsal özelliklerle birlikte node oluþturur.
         /// </summary>
         public Node(int id, string name, double aktiflik, double etkilesim) : this(id, name)
         {
@@ -51,20 +51,20 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// Kom?u dü?üm ve kenar a??rl??? ekler.
+        /// Komþu düðüm ve kenar aðýrlýðý ekler.
         /// </summary>
         public void AddNeighbor(Node other, double weight = 1.0)
         {
             if (other == null) throw new ArgumentNullException(nameof(other));
-            if (other.Id == Id) throw new InvalidOperationException("Kendine ba?lant? eklenemez.");
-            if (weight <= 0) throw new ArgumentOutOfRangeException(nameof(weight), "Weight > 0 olmal?.");
+            if (other.Id == Id) throw new InvalidOperationException("Kendine baðlantý eklenemez.");
+            if (weight <= 0) throw new ArgumentOutOfRangeException(nameof(weight), "Weight > 0 olmalý.");
 
             // Varsa üzerine yazma, yoksa ekleme
             _neighbors[other] = weight;
         }
 
         /// <summary>
-        /// Kom?u dü?ümü kald?r?r.
+        /// Komþu düðümü kaldýrýr.
         /// </summary>
         public bool RemoveNeighbor(Node other)
         {
@@ -73,7 +73,7 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// Verilen dü?üme ba?l? olup olmad???n? kontrol eder.
+        /// Verilen düðüme baðlý olup olmadýðýný kontrol eder.
         /// </summary>
         public bool IsConnectedTo(Node other)
         {
@@ -82,35 +82,35 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// Dü?ümün string temsilini döner.
+        /// Düðümün string temsilini döner.
         /// Örn: "Alice (#1)"
         /// </summary>
         public override string ToString() => $"{Name} (#{Id})";
 
         /// <summary>
-        /// Dü?ümleri ID'ye göre e?itlik kontrolü yapar.
+        /// Düðümleri ID'ye göre eþitlik kontrolü yapar.
         /// </summary>
         public override bool Equals(object? obj) => obj is Node n && n.Id == Id;
         
         /// <summary>
-        /// Dü?ümün hash code'unu ID'ye göre döner.
+        /// Düðümün hash code'unu ID'ye göre döner.
         /// </summary>
         public override int GetHashCode() => Id.GetHashCode();
 
         /// <summary>
-        /// Dü?ümün özelliklerini günceller (opsiyonel).
+        /// Düðümün özelliklerini günceller (opsiyonel).
         /// </summary>
         public void Update(string? name = null, double? aktiflik = null, double? etkilesim = null)
         {
-            // Name null de?ilse güncelle
+            // Name null deðilse güncelle
             if (!string.IsNullOrWhiteSpace(name))
                 Name = name.Trim();
 
-            // Aktiflik null de?ilse güncelle
+            // Aktiflik null deðilse güncelle
             if (aktiflik.HasValue)
                 Aktiflik = aktiflik.Value;
 
-            // Etkile?im null de?ilse güncelle
+            // Etkileþim null deðilse güncelle
             if (etkilesim.HasValue)
                 Etkilesim = etkilesim.Value;
         }

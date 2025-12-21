@@ -4,36 +4,36 @@ using SocialNetworkApp.Models;
 namespace SocialNetworkApp.Algorithms
 {
     /// <summary>
-    /// Graf traversal algoritmalar?n? içerir.
+    /// Graf traversal algoritmalarýný içerir.
     /// BFS (Breadth-First Search) ve DFS (Depth-First Search).
     /// </summary>
     public static class TraversalAlgorithms
     {
         /// <summary>
-        /// Geni?lik-ilk arama (BFS) - Level seviyesinde ke?if yapar.
-        /// Ba?lang?ç dü?ümünden ba?layarak tüm ula??labilir dü?ümleri gezir.
-        /// Queue yap?s? kullan?r.
+        /// Geniþlik-ilk arama (BFS) - Level seviyesinde keþif yapar.
+        /// Baþlangýç düðümünden baþlayarak tüm ulaþýlabilir düðümleri gezir.
+        /// Queue yapýsý kullanýr.
         /// </summary>
-        /// <param name="graph">Traversal yap?lacak graf</param>
-        /// <param name="startId">Ba?lang?ç dü?üm ID'si</param>
-        /// <returns>BFS s?ras?na göre dü?üm ID'leri</returns>
+        /// <param name="graph">Traversal yapýlacak graf</param>
+        /// <param name="startId">Baþlangýç düðüm ID'si</param>
+        /// <returns>BFS sýrasýna göre düðüm ID'leri</returns>
         public static List<int> BFS(Graph graph, int startId)
         {
             var visited = new HashSet<int>();
             var queue = new Queue<int>();
             var order = new List<int>();
 
-            // Ba?lang?ç dü?ümünü queue'ye ekle
+            // Baþlangýç düðümünü queue'ye ekle
             visited.Add(startId);
             queue.Enqueue(startId);
 
-            // Queue bo?alana kadar devam et
+            // Queue boþalana kadar devam et
             while (queue.Count > 0)
             {
                 var u = queue.Dequeue();
                 order.Add(u);
 
-                // Kom?ular? queue'ye ekle (level s?ras?yla)
+                // Komþularý queue'ye ekle (level sýrasýyla)
                 foreach (var v in graph.GetNeighbors(u))
                 {
                     if (!visited.Contains(v))
@@ -48,23 +48,23 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// Derinlik-ilk arama (DFS) - Derinli?e do?ru ke?if yapar.
-        /// Ba?lang?ç dü?ümünden ba?layarak mümkün oldu?unca derine iner.
-        /// Stack yap?s? kullan?r.
+        /// Derinlik-ilk arama (DFS) - Derinliðe doðru keþif yapar.
+        /// Baþlangýç düðümünden baþlayarak mümkün olduðunca derine iner.
+        /// Stack yapýsý kullanýr.
         /// </summary>
-        /// <param name="graph">Traversal yap?lacak graf</param>
-        /// <param name="startId">Ba?lang?ç dü?üm ID'si</param>
-        /// <returns>DFS s?ras?na göre dü?üm ID'leri</returns>
+        /// <param name="graph">Traversal yapýlacak graf</param>
+        /// <param name="startId">Baþlangýç düðüm ID'si</param>
+        /// <returns>DFS sýrasýna göre düðüm ID'leri</returns>
         public static List<int> DFS(Graph graph, int startId)
         {
             var visited = new HashSet<int>();
             var stack = new Stack<int>();
             var order = new List<int>();
 
-            // Ba?lang?ç dü?ümünü stack'e ekle
+            // Baþlangýç düðümünü stack'e ekle
             stack.Push(startId);
 
-            // Stack bo?alana kadar devam et
+            // Stack boþalana kadar devam et
             while (stack.Count > 0)
             {
                 var u = stack.Pop();
@@ -73,7 +73,7 @@ namespace SocialNetworkApp.Algorithms
                 visited.Add(u);
                 order.Add(u);
 
-                // Kom?ular? stack'e ekle (derinli?e gitmek için)
+                // Komþularý stack'e ekle (derinliðe gitmek için)
                 foreach (var v in graph.GetNeighbors(u))
                 {
                     if (!visited.Contains(v))

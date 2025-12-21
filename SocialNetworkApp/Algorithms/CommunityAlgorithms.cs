@@ -8,14 +8,14 @@ namespace SocialNetworkApp.Algorithms
     public static class CommunityAlgorithms
     {
         /// <summary>
-        /// Grafta ba?l? bile?enleri (connected components) bulur.
-        /// Her bile?en, birbirine ba?l? olan dü?ümlerin bir listesidir.
-        /// DFS algoritmas? kullanarak ba?lant?s?z bile?enleri tespit eder.
+        /// Grafta baðlý bileþenleri (connected components) bulur.
+        /// Her bileþen, birbirine baðlý olan düðümlerin bir listesidir.
+        /// DFS algoritmasý kullanarak baðlantýsýz bileþenleri tespit eder.
         /// </summary>
         /// <param name="graph">Hedef graf</param>
         /// <returns>
-        /// Ba?l? bile?enlerin listesi. Her bile?en, dü?üm ID'lerinin bir listesidir.
-        /// E?er graf bo? ise, bo? bir liste döner.
+        /// Baðlý bileþenlerin listesi. Her bileþen, düðüm ID'lerinin bir listesidir.
+        /// Eðer graf boþ ise, boþ bir liste döner.
         /// </returns>
         public static List<List<int>> ConnectedComponents(Graph graph)
         {
@@ -55,10 +55,10 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// Ba?l? bile?enlerin say?s?n? döner.
+        /// Baðlý bileþenlerin sayýsýný döner.
         /// </summary>
         /// <param name="graph">Hedef graf</param>
-        /// <returns>Ba?l? bile?en say?s?</returns>
+        /// <returns>Baðlý bileþen sayýsý</returns>
         public static int GetComponentCount(Graph graph)
         {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
@@ -66,11 +66,11 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// Ba?l? bile?enlerin özet bilgisini döner (UI'de göstermek için).
-        /// Format: "Toplam 3 bile?en bulundu. En büyük bile?en: 5 dü?üm (Bile?en-1)"
+        /// Baðlý bileþenlerin özet bilgisini döner (UI'de göstermek için).
+        /// Format: "Toplam 3 bileþen bulundu. En büyük bileþen: 5 düðüm (Bileþen-1)"
         /// </summary>
         /// <param name="graph">Hedef graf</param>
-        /// <returns>Bile?enlerin özeti</returns>
+        /// <returns>Bileþenlerin özeti</returns>
         public static string GetComponentSummary(Graph graph)
         {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
@@ -78,23 +78,23 @@ namespace SocialNetworkApp.Algorithms
             var components = ConnectedComponents(graph);
 
             if (components.Count == 0)
-                return "Hiçbir bile?en bulunamad?.";
+                return "Hiçbir bileþen bulunamadý.";
 
             var largestComp = components.OrderByDescending(c => c.Count).First();
             var largestCompIndex = components.IndexOf(largestComp) + 1;
 
-            return $"Toplam {components.Count} bile?en bulundu. " +
-                   $"En büyük bile?en: {largestComp.Count} dü?üm (Bile?en-{largestCompIndex})";
+            return $"Toplam {components.Count} bileþen bulundu. " +
+                   $"En büyük bileþen: {largestComp.Count} düðüm (Bileþen-{largestCompIndex})";
         }
 
         /// <summary>
-        /// Her bile?eni detayl? bilgiyle döner (UI ListBox'ta göstermek için).
-        /// Format: [("Bile?en-1", [1, 2, 3, 4]), ("Bile?en-2", [5, 6]), ...]
+        /// Her bileþeni detaylý bilgiyle döner (UI ListBox'ta göstermek için).
+        /// Format: [("Bileþen-1", [1, 2, 3, 4]), ("Bileþen-2", [5, 6]), ...]
         /// </summary>
         /// <param name="graph">Hedef graf</param>
         /// <returns>
-        /// Tuple listesi: (bile?en ad?, dü?üm ID'leri)
-        /// Örnek: ("Bile?en-1", [1, 2, 3, 4])
+        /// Tuple listesi: (bileþen adý, düðüm ID'leri)
+        /// Örnek: ("Bileþen-1", [1, 2, 3, 4])
         /// </returns>
         public static List<(string name, List<int> nodeIds)> GetComponentsWithNames(Graph graph)
         {
@@ -105,7 +105,7 @@ namespace SocialNetworkApp.Algorithms
 
             for (int i = 0; i < components.Count; i++)
             {
-                var name = $"Bile?en-{i + 1} ({components[i].Count} dü?üm)";
+                var name = $"Bileþen-{i + 1} ({components[i].Count} düðüm)";
                 result.Add((name, components[i]));
             }
 
@@ -113,12 +113,12 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// Verilen bir dü?üm ID'sinin hangi bile?ene ait oldu?unu bulur.
+        /// Verilen bir düðüm ID'sinin hangi bileþene ait olduðunu bulur.
         /// </summary>
         /// <param name="graph">Hedef graf</param>
-        /// <param name="nodeId">Dü?üm ID'si</param>
+        /// <param name="nodeId">Düðüm ID'si</param>
         /// <returns>
-        /// Dü?ümün ait oldu?u bile?en. E?er dü?üm grafta yoksa, bo? bir liste döner.
+        /// Düðümün ait olduðu bileþen. Eðer düðüm grafta yoksa, boþ bir liste döner.
         /// </returns>
         public static List<int> GetComponentOf(Graph graph, int nodeId)
         {
@@ -129,12 +129,12 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// ?ki dü?ümün ayn? bile?ende olup olmad???n? kontrol eder.
+        /// Ýki düðümün ayný bileþende olup olmadýðýný kontrol eder.
         /// </summary>
         /// <param name="graph">Hedef graf</param>
-        /// <param name="nodeId1">Birinci dü?üm ID'si</param>
-        /// <param name="nodeId2">?kinci dü?üm ID'si</param>
-        /// <returns>E?er dü?ümler ayn? bile?endeyse true, aksi halde false</returns>
+        /// <param name="nodeId1">Birinci düðüm ID'si</param>
+        /// <param name="nodeId2">Ýkinci düðüm ID'si</param>
+        /// <returns>Eðer düðümler ayný bileþendeyse true, aksi halde false</returns>
         public static bool AreInSameComponent(Graph graph, int nodeId1, int nodeId2)
         {
             if (graph == null) throw new ArgumentNullException(nameof(graph));

@@ -5,27 +5,27 @@ using System.Linq;
 namespace SocialNetworkApp.Models
 {
     /// <summary>
-    /// Sosyal a? graf?n? temsil eder.
-    /// Dü?ümler (nodes) ve kenarlar? (edges) yönetir.
-    /// Yönsüz, a??rl?kl? graf yap?s?d?r.
+    /// Sosyal að grafýný temsil eder.
+    /// Düðümleri (nodes) ve kenarlarý (edges) yönetir.
+    /// Yönsüz, aðýrlýklý graf yapýsýdýr.
     /// </summary>
     public class Graph
     {
-        // Tüm dü?ümleri ID'ye göre sakla (h?zl? lookup)
+        // Tüm düðümleri ID'ye göre sakla (hýzlý lookup)
         private readonly Dictionary<int, Node> _nodes = new();
         
-        // Kom?uluk listesi: Her dü?ümün kom?ular?n? ve kenarlar?n? sakla
+        // Komþuluk listesi: Her düðümün komþularýný ve kenarlarýný sakla
         private readonly Dictionary<int, List<Edge>> _adj = new();
 
         /// <summary>
-        /// Graf?n tüm dü?ümlerine read-only eri?im.
+        /// Grafýn tüm düðümlerine read-only eriþim.
         /// </summary>
         public IReadOnlyDictionary<int, Node> Nodes => _nodes;
 
         /// <summary>
-        /// Grafa yeni dü?üm ekler.
+        /// Grafa yeni düðüm ekler.
         /// </summary>
-        /// <returns>Ba?ar?l? ise true, zaten varsa false</returns>
+        /// <returns>Baþarýlý ise true, zaten varsa false</returns>
         public bool AddNode(Node node)
         {
             if (node is null) throw new ArgumentNullException(nameof(node));
@@ -36,13 +36,13 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// Grafdan dü?üm kald?r?r (ili?kili kenarlar da silinir).
+        /// Grafdan düðüm kaldýrýr (iliþkili kenarlar da silinir).
         /// </summary>
         public bool RemoveNode(int nodeId)
         {
             if (!_nodes.ContainsKey(nodeId)) return false;
 
-            // Bu dü?ümün tüm kenarlar?n? sil
+            // Bu düðümün tüm kenarlarýný sil
             if (_adj.TryGetValue(nodeId, out var edges))
             {
                 var neighbors = edges.Select(e => e.TargetId).ToList();
@@ -53,7 +53,7 @@ namespace SocialNetworkApp.Models
                 _adj.Remove(nodeId);
             }
             
-            // Di?er dü?ümlerin listelerinden bu dü?üme giden kenarlar? sil
+            // Diðer düðümlerin listelerinden bu düðüme giden kenarlarý sil
             foreach (var list in _adj.Values)
             {
                 list.RemoveAll(e => e.TargetId == nodeId);
@@ -64,7 +64,7 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// Dü?ümün özelliklerini günceller.
+        /// Düðümün özelliklerini günceller.
         /// </summary>
         public bool UpdateNode(int nodeId, string name, double aktiflik, double etkilesim)
         {
@@ -74,7 +74,7 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// ID'ye göre dü?ümü döner.
+        /// ID'ye göre düðümü döner.
         /// </summary>
         public Node? GetNode(int nodeId)
         {
@@ -83,13 +83,13 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// Graf?n tüm dü?ümlerini döner.
+        /// Grafýn tüm düðümlerini döner.
         /// </summary>
         public IEnumerable<Node> GetAllNodes() => _nodes.Values;
 
         /// <summary>
-        /// Bir dü?ümün tüm kom?ular?n? döner.
-        /// Algoritmalarda kom?u bulma için kullan?l?r.
+        /// Bir düðümün tüm komþularýný döner.
+        /// Algoritmalarda komþu bulma için kullanýlýr.
         /// </summary>
         public IEnumerable<int> GetNeighbors(int nodeId)
         {
@@ -97,23 +97,23 @@ namespace SocialNetworkApp.Models
             return list.Select(e => e.TargetId);
         }
 
-        // ============ KENAR YÖNET?M? ============
+        // ============ KENAR YÖNETÝMÝ ============
 
         /// <summary>
-        /// Graf?n tüm kenarlar?n? döner.
+        /// Grafýn tüm kenarlarýný döner.
         /// </summary>
         public IEnumerable<Edge> GetEdges() => _adj.Values.SelectMany(l => l).Distinct();
 
         /// <summary>
         /// Grafa kenar ekler (yönsüz: her iki yöne eklenir).
         /// </summary>
-        /// <returns>Ba?ar?l? ise true, zaten varsa false</returns>
+        /// <returns>Baþarýlý ise true, zaten varsa false</returns>
         public bool AddEdge(Edge edge)
         {
             if (edge == null) throw new ArgumentNullException(nameof(edge));
             if (edge.IsLoop) return false;
             
-            // Her iki dü?ümün de graf'ta olmas? gerekir
+            // Her iki düðümün de graf'ta olmasý gerekir
             if (!_nodes.ContainsKey(edge.SourceId) || !_nodes.ContainsKey(edge.TargetId)) return false;
 
             // Source ? Target yönü
@@ -134,7 +134,7 @@ namespace SocialNetworkApp.Models
                 _adj[edge.TargetId] = rev;
             }
             
-            // Reverse kenar? ekle
+            // Reverse kenarý ekle
             if (!rev.Any(e => e.TargetId == edge.SourceId))
             {
                 rev.Add(new Edge(edge.TargetId, edge.SourceId, edge.Weight));
@@ -144,7 +144,7 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// Graftan kenar kald?r?r (her iki yöndeki kenar silinir).
+        /// Graftan kenar kaldýrýr (her iki yöndeki kenar silinir).
         /// </summary>
         public bool RemoveEdge(int sourceId, int targetId)
         {
@@ -166,10 +166,10 @@ namespace SocialNetworkApp.Models
         }
 
         /// <summary>
-        /// ?ki dü?üm aras?ndaki kenar a??rl???n? döner.
-        /// Dijkstra ve A* algoritmalar? taraf?ndan kullan?l?r.
+        /// Ýki düðüm arasýndaki kenar aðýrlýðýný döner.
+        /// Dijkstra ve A* algoritmalarý tarafýndan kullanýlýr.
         /// </summary>
-        /// <param name="weight">Kenar a??rl??? (ba?ar?s?z ise PositiveInfinity)</param>
+        /// <param name="weight">Kenar aðýrlýðý (baþarýsýz ise PositiveInfinity)</param>
         /// <returns>Kenar varsa true, yoksa false</returns>
         public bool TryGetEdgeWeight(int sourceId, int targetId, out double weight)
         {

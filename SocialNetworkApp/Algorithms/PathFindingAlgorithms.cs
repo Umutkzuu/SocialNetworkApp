@@ -8,13 +8,13 @@ namespace SocialNetworkApp.Algorithms
     public static class PathFindingAlgorithms
     {
         /// <summary>
-        /// Dijkstra algoritmas? ile iki dü?üm aras?ndaki en k?sa yolu bulur.
-        /// A??rl?kl?, yönsüz grafta çal???r. Tüm a??rl?klar pozitif olmal?d?r.
+        /// Dijkstra algoritmasý ile iki düðüm arasýndaki en kýsa yolu bulur.
+        /// Aðýrlýklý, yönsüz grafta çalýþýr. Tüm aðýrlýklar pozitif olmalýdýr.
         /// </summary>
         /// <param name="graph">Hedef graf</param>
-        /// <param name="startId">Ba?lang?ç dü?üm ID'si</param>
-        /// <param name="goalId">Hedef dü?üm ID'si</param>
-        /// <returns>Tuple: (yol listesi, toplam maliyet). Yol yok ise (bo? liste, PositiveInfinity)</returns>
+        /// <param name="startId">Baþlangýç düðüm ID'si</param>
+        /// <param name="goalId">Hedef düðüm ID'si</param>
+        /// <returns>Tuple: (yol listesi, toplam maliyet). Yol yok ise (boþ liste, PositiveInfinity)</returns>
         public static (List<int> path, double cost) Dijkstra(Graph graph, int startId, int goalId)
         {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
@@ -64,14 +64,14 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// A* algoritmas? ile iki dü?üm aras?ndaki en k?sa yolu bulur.
-        /// Heuristic fonksiyonu verilmez ise, özellik uzay?nda (Aktiflik, Etkilesim) Euclidean mesafe kullan?l?r.
+        /// A* algoritmasý ile iki düðüm arasýndaki en kýsa yolu bulur.
+        /// Heuristic fonksiyonu verilmez ise, özellik uzayýnda (Aktiflik, Etkilesim) Euclidean mesafe kullanýlýr.
         /// </summary>
         /// <param name="graph">Hedef graf</param>
-        /// <param name="startId">Ba?lang?ç dü?üm ID'si</param>
-        /// <param name="goalId">Hedef dü?üm ID'si</param>
-        /// <param name="heuristic">Heuristic fonksiyonu (iki Node aras?ndaki tahmini mesafe). Null ise Euclidean kullan?l?r.</param>
-        /// <returns>Tuple: (yol listesi, toplam maliyet). Yol yok ise (bo? liste, PositiveInfinity)</returns>
+        /// <param name="startId">Baþlangýç düðüm ID'si</param>
+        /// <param name="goalId">Hedef düðüm ID'si</param>
+        /// <param name="heuristic">Heuristic fonksiyonu (iki Node arasýndaki tahmini mesafe). Null ise Euclidean kullanýlýr.</param>
+        /// <returns>Tuple: (yol listesi, toplam maliyet). Yol yok ise (boþ liste, PositiveInfinity)</returns>
         public static (List<int> path, double cost) AStar(
             Graph graph, 
             int startId, 
@@ -84,7 +84,7 @@ namespace SocialNetworkApp.Algorithms
             if (!allNodeIds.Contains(startId) || !allNodeIds.Contains(goalId)) 
                 return (new List<int>(), double.PositiveInfinity);
 
-            // Varsay?lan heuristic: Aktiflik ve Etkilesim özellikleri aras?ndaki Euclidean mesafe
+            // Varsayýlan heuristic: Aktiflik ve Etkilesim özellikleri arasýndaki Euclidean mesafe
             heuristic ??= DefaultHeuristic;
 
             var openSet = new HashSet<int> { startId };
@@ -129,7 +129,7 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// Dijkstra algoritmas? sonras?nda geriye do?ru yolu kapat?r.
+        /// Dijkstra algoritmasý sonrasýnda geriye doðru yolu kapatýr.
         /// </summary>
         private static List<int> ReconstructPath(Dictionary<int, int?> prev, int startId, int goalId)
         {
@@ -149,7 +149,7 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// A* algoritmas? sonras?nda geriye do?ru yolu kapat?r.
+        /// A* algoritmasý sonrasýnda geriye doðru yolu kapatýr.
         /// </summary>
         private static List<int> ReconstructPathAStar(Dictionary<int, int> cameFrom, int current)
         {
@@ -166,7 +166,7 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// Varsay?lan heuristic: Dü?üm özelliklerinin (Aktiflik, Etkilesim) Euclidean mesafesi.
+        /// Varsayýlan heuristic: Düðüm özelliklerinin (Aktiflik, Etkilesim) Euclidean mesafesi.
         /// </summary>
         private static double DefaultHeuristic(Node a, Node b)
         {

@@ -5,28 +5,28 @@ using SocialNetworkApp.Models;
 namespace SocialNetworkApp.Algorithms
 {
     /// <summary>
-    /// Dü?ümler ve kenarlar aras?ndaki a??rl?k (weight) de?erlerini hesaplar.
-    /// Projede istenen formül: w = 1 / (1 + (aktiflik_fark)² + (etkile?im_fark)² + (ba?lant?_fark)²)
+    /// Düðümler ve kenarlar arasýndaki aðýrlýk (weight) deðerlerini hesaplar.
+    /// Projede istenen formül: w = 1 / (1 + (aktiflik_fark)² + (etkileþim_fark)² + (baðlantý_fark)²)
     /// </summary>
     public static class WeightCalculator
     {
         /// <summary>
-        /// Proje isterlerdeki formüle göre iki dü?üm aras?ndaki a??rl??? hesaplar.
+        /// Proje isterlerdeki formüle göre iki düðüm arasýndaki aðýrlýðý hesaplar.
         /// Formül: w = 1 / (1 + (Aktiflik_i - Aktiflik_j)² + (Etkilesim_i - Etkilesim_j)² + (Neighbors_i - Neighbors_j)²)
         /// 
-        /// Benzer özelliklere sahip dü?ümler aras?ndaki a??rl?k daha yüksek olur.
-        /// Farkl? özelliklere sahip dü?ümler aras?ndaki a??rl?k daha dü?ük olur.
+        /// Benzer özelliklere sahip düðümler arasýndaki aðýrlýk daha yüksek olur.
+        /// Farklý özelliklere sahip düðümler arasýndaki aðýrlýk daha düþük olur.
         /// </summary>
-        /// <param name="a">Birinci dü?üm</param>
-        /// <param name="b">?kinci dü?üm</param>
-        /// <returns>Hesaplanan a??rl?k (pozitif double de?er)</returns>
-        /// <exception cref="ArgumentNullException">E?er a veya b null ise</exception>
+        /// <param name="a">Birinci düðüm</param>
+        /// <param name="b">Ýkinci düðüm</param>
+        /// <returns>Hesaplanan aðýrlýk (pozitif double deðer)</returns>
+        /// <exception cref="ArgumentNullException">Eðer a veya b null ise</exception>
         public static double Calculate(Node a, Node b)
         {
             if (a == null) throw new ArgumentNullException(nameof(a));
             if (b == null) throw new ArgumentNullException(nameof(b));
 
-            // Özellikler aras?ndaki farklar
+            // Özellikler arasýndaki farklar
             var daAktiflik = a.Aktiflik - b.Aktiflik;
             var daEtkilesim = a.Etkilesim - b.Etkilesim;
             var daNeighbors = a.Neighbors.Count - b.Neighbors.Count;
@@ -39,13 +39,13 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// Dinamik özelliklere (features) göre a??rl?k hesaplar.
-        /// CSV/JSON'dan gelen verilerde kullan?lacak.
+        /// Dinamik özelliklere (features) göre aðýrlýk hesaplar.
+        /// CSV/JSON'dan gelen verilerde kullanýlacak.
         /// Formül: w = 1 / (1 + ?(feature_i_fark)²)
         /// </summary>
-        /// <param name="nodeAFeatures">Birinci dü?ümün özellikleri (örn: {"Aktiflik": 0.8, "Etkile?im": 12})</param>
-        /// <param name="nodeBFeatures">?kinci dü?ümün özellikleri</param>
-        /// <returns>Hesaplanan a??rl?k (pozitif double de?er)</returns>
+        /// <param name="nodeAFeatures">Birinci düðümün özellikleri (örn: {"Aktiflik": 0.8, "Etkileþim": 12})</param>
+        /// <param name="nodeBFeatures">Ýkinci düðümün özellikleri</param>
+        /// <returns>Hesaplanan aðýrlýk (pozitif double deðer)</returns>
         public static double CalculateFromFeatures(Dictionary<string, double> nodeAFeatures, Dictionary<string, double> nodeBFeatures)
         {
             if (nodeAFeatures == null || nodeBFeatures == null)
@@ -56,7 +56,7 @@ namespace SocialNetworkApp.Algorithms
 
             double sumSquaredDiffs = 0.0;
 
-            // Ortak feature'lar? kar??la?t?r
+            // Ortak feature'larý karþýlaþtýr
             foreach (var key in nodeAFeatures.Keys)
             {
                 if (nodeBFeatures.TryGetValue(key, out var bValue))
@@ -73,19 +73,19 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// A??rl??? 0-1 aras?nda normalize eder.
-        /// 0 = çok dü?ük a??rl?k, 1 = çok yüksek a??rl?k
+        /// Aðýrlýðý 0-1 arasýnda normalize eder.
+        /// 0 = çok düþük aðýrlýk, 1 = çok yüksek aðýrlýk
         /// </summary>
-        /// <param name="weight">Normalle?tirilecek a??rl?k de?eri</param>
-        /// <param name="minValue">Minimum beklenen a??rl?k (default: 0)</param>
-        /// <param name="maxValue">Maksimum beklenen a??rl?k (default: 1)</param>
-        /// <returns>0-1 aras?nda normalize edilmi? a??rl?k</returns>
+        /// <param name="weight">Normalleþtirilecek aðýrlýk deðeri</param>
+        /// <param name="minValue">Minimum beklenen aðýrlýk (default: 0)</param>
+        /// <param name="maxValue">Maksimum beklenen aðýrlýk (default: 1)</param>
+        /// <returns>0-1 arasýnda normalize edilmiþ aðýrlýk</returns>
         public static double NormalizeTo01(double weight, double minValue = 0.0, double maxValue = 1.0)
         {
             if (maxValue <= minValue)
-                return 0.5; // Geçersiz aral?k, orta de?er döndür
+                return 0.5; // Geçersiz aralýk, orta deðer döndür
 
-            // Clamp: weight'i minValue-maxValue aras?nda s?n?rla
+            // Clamp: weight'i minValue-maxValue arasýnda sýnýrla
             var clampedWeight = Math.Max(minValue, Math.Min(maxValue, weight));
 
             // Normalize: (value - min) / (max - min)
@@ -95,43 +95,43 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// A??rl??? 1-10 aras?nda normalize eder.
-        /// 1 = çok dü?ük a??rl?k, 10 = çok yüksek a??rl?k
-        /// UI'de göstermek için kullan?labilir.
+        /// Aðýrlýðý 1-10 arasýnda normalize eder.
+        /// 1 = çok düþük aðýrlýk, 10 = çok yüksek aðýrlýk
+        /// UI'de göstermek için kullanýlabilir.
         /// </summary>
-        /// <param name="weight">Normalle?tirilecek a??rl?k de?eri</param>
-        /// <param name="minValue">Minimum beklenen a??rl?k (default: 0)</param>
-        /// <param name="maxValue">Maksimum beklenen a??rl?k (default: 1)</param>
-        /// <returns>1-10 aras?nda normalize edilmi? a??rl?k</returns>
+        /// <param name="weight">Normalleþtirilecek aðýrlýk deðeri</param>
+        /// <param name="minValue">Minimum beklenen aðýrlýk (default: 0)</param>
+        /// <param name="maxValue">Maksimum beklenen aðýrlýk (default: 1)</param>
+        /// <returns>1-10 arasýnda normalize edilmiþ aðýrlýk</returns>
         public static double NormalizeTo1_10(double weight, double minValue = 0.0, double maxValue = 1.0)
         {
             var normalized01 = NormalizeTo01(weight, minValue, maxValue);
-            return 1.0 + (normalized01 * 9.0); // 1-10 ölçe?ine çevir
+            return 1.0 + (normalized01 * 9.0); // 1-10 ölçeðine çevir
         }
 
         /// <summary>
-        /// ?ki dü?üm aras?ndaki kenar a??rl???n? hesaplar ve Edge olu?tururken kullan?lacak de?eri döner.
-        /// A??rl?k 0'dan büyük olmal?d?r (negatif a??rl?k geçersiz).
+        /// Ýki düðüm arasýndaki kenar aðýrlýðýný hesaplar ve Edge oluþtururken kullanýlacak deðeri döner.
+        /// Aðýrlýk 0'dan büyük olmalýdýr (negatif aðýrlýk geçersiz).
         /// </summary>
-        /// <param name="a">Birinci dü?üm</param>
-        /// <param name="b">?kinci dü?üm</param>
-        /// <returns>Edge'de kullan?lacak a??rl?k (pozitif, minimum 0.01)</returns>
+        /// <param name="a">Birinci düðüm</param>
+        /// <param name="b">Ýkinci düðüm</param>
+        /// <returns>Edge'de kullanýlacak aðýrlýk (pozitif, minimum 0.01)</returns>
         public static double GetWeightForEdge(Node a, Node b)
         {
             if (a == null || b == null)
-                return 1.0; // Default a??rl?k
+                return 1.0; // Default aðýrlýk
 
             var weight = Calculate(a, b);
 
-            // Edge a??rl??? en az 0.01 olmal? (0 de?erine izin verme)
+            // Edge aðýrlýðý en az 0.01 olmalý (0 deðerine izin verme)
             return Math.Max(0.01, weight);
         }
 
         /// <summary>
-        /// A??rl?k de?erinin geçerli olup olmad???n? kontrol eder.
-        /// Geçerli a??rl?k: pozitif ve sonlu (NaN/Infinity de?il)
+        /// Aðýrlýk deðerinin geçerli olup olmadýðýný kontrol eder.
+        /// Geçerli aðýrlýk: pozitif ve sonlu (NaN/Infinity deðil)
         /// </summary>
-        /// <param name="weight">Kontrol edilecek a??rl?k</param>
+        /// <param name="weight">Kontrol edilecek aðýrlýk</param>
         /// <returns>Geçerli ise true, aksi halde false</returns>
         public static bool IsValidWeight(double weight)
         {
@@ -139,11 +139,11 @@ namespace SocialNetworkApp.Algorithms
         }
 
         /// <summary>
-        /// Verilen a??rl?klar? normalize ederek bir a??rl?k profili olu?turur.
-        /// Tüm a??rl?klar? 0-1 aras?nda normalize eder.
+        /// Verilen aðýrlýklarý normalize ederek bir aðýrlýk profili oluþturur.
+        /// Tüm aðýrlýklarý 0-1 arasýnda normalize eder.
         /// </summary>
-        /// <param name="weights">Normalize edilecek a??rl?k listesi</param>
-        /// <returns>Normalize edilmi? a??rl?klar listesi</returns>
+        /// <param name="weights">Normalize edilecek aðýrlýk listesi</param>
+        /// <returns>Normalize edilmiþ aðýrlýklar listesi</returns>
         public static List<double> NormalizeWeights(List<double> weights)
         {
             if (weights == null || weights.Count == 0)
@@ -152,7 +152,7 @@ namespace SocialNetworkApp.Algorithms
             var minWeight = double.MaxValue;
             var maxWeight = double.MinValue;
 
-            // Min ve max de?erleri bul
+            // Min ve max deðerleri bul
             foreach (var w in weights)
             {
                 if (IsValidWeight(w))
@@ -166,7 +166,7 @@ namespace SocialNetworkApp.Algorithms
             var normalized = new List<double>();
             if (maxWeight <= minWeight)
             {
-                // Tüm a??rl?klar ayn?
+                // Tüm aðýrlýklar ayný
                 foreach (var w in weights)
                     normalized.Add(0.5);
             }
