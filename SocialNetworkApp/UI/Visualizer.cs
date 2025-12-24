@@ -77,6 +77,7 @@ namespace SocialNetworkApp.UI
         /// <summary>
         /// Grafý render eder (çizer).
         /// Edges ? Nodes ? Labels sýrasýnda çizilir.
+        /// FIX: Node pozisyonlarýný grafýn düðüm sayýsý ile karþýlaþtýrarak güncelle
         /// </summary>
         /// <param name="g">Graphics nesnesi</param>
         /// <param name="graph">Çizilecek graf</param>
@@ -87,8 +88,8 @@ namespace SocialNetworkApp.UI
             g.Clear(Color.White);
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            // Node konumlarýný hesapla (ilk kez)
-            if (_nodePositions.Count == 0)
+            // GÖREV 1 FIX: Node konumlarýný hesapla (ilk kez veya düðüm sayýsý deðiþtiðinde)
+            if (_nodePositions.Count != graph.Nodes.Count)
             {
                 var nodeIds = graph.GetAllNodes().Select(n => n.Id).ToList();
                 CalculateCircleLayout(nodeIds);
